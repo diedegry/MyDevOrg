@@ -88,7 +88,8 @@ public with sharing class RelationshipTriggerHandler extends TriggerHandler{
         //List of task to insert
         List<Task> taskToInsert = new List<Task>();
         
-        /*for(Relationship__c relation : [SELECT Id, Type__c, OwnerId FROM Relationship__c WHERE Id IN :triggerNew]){
+        /* Soql query limit
+        for(Relationship__c relation : [SELECT Id, Type__c, OwnerId FROM Relationship__c WHERE Id IN :triggerNew]){
             if(relation.Type__c != null && relation.OwnerId != null && (oldMap == null || oldMap.get(relation.Id).Type__c != relation.Type__c)){
                 String query = 'SELECT MasterLabel, Time__c, Type_' + relation.Type__c + '__c FROM Task_Scheduler__mdt WHERE Type_' + relation.Type__c + '__c = true';
                 for(Task_Scheduler__mdt ts : Database.query(query)){
@@ -156,7 +157,4 @@ public with sharing class RelationshipTriggerHandler extends TriggerHandler{
         //Create Task
         insert taskToInsert;
     }
-
-
-    // UPDATE ASYNC, USE FUTURE METHOD TO GET MAP<RELATIONSHIP__C, LIST<TASK_SCHEDULER__MDT>>
 }
