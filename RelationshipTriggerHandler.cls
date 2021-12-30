@@ -95,25 +95,7 @@ public with sharing class RelationshipTriggerHandler extends TriggerHandler{
                         OwnerId = relation.OwnerId,
                         WhatId = relation.Id
                     );
-                    if(relation.Type__c == '1' && ts.Type_1__c == true){
-                        Integer days = (Integer)ts.Time__c;
-                        task.Subject = ts.MasterLabel;
-                        task.ActivityDate = Date.Today().addDays(days);
-                        taskToInsert.add(task);
-                    }
-                    else if(relation.Type__c == '2' && ts.Type_2__c == true){
-                        Integer days = (Integer)ts.Time__c;
-                        task.Subject = ts.MasterLabel;
-                        task.ActivityDate = Date.Today().addDays(days);
-                        taskToInsert.add(task);
-                    }
-                    else if(relation.Type__c == '3' && ts.Type_3__c == true){
-                        Integer days = (Integer)ts.Time__c;
-                        task.Subject = ts.MasterLabel;
-                        task.ActivityDate = Date.Today().addDays(days);
-                        taskToInsert.add(task);
-                    }
-                    else if(relation.Type__c == '4' && ts.Type_4__c == true){
+                    if((relation.Type__c == '1' && ts.Type_1__c == true) || (relation.Type__c == '2' && ts.Type_2__c == true) || (relation.Type__c == '3' && ts.Type_3__c == true) || (relation.Type__c == '4' && ts.Type_4__c == true)){
                         Integer days = (Integer)ts.Time__c;
                         task.Subject = ts.MasterLabel;
                         task.ActivityDate = Date.Today().addDays(days);
