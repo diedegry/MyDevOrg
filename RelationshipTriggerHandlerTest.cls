@@ -90,7 +90,7 @@ public with sharing class RelationshipTriggerHandlerTest {
             );
             relList.add(relationship);
         }
-        /*for(Integer i = 0; i < 3; i++){
+        for(Integer i = 0; i < 3; i++){
             Relationship__c relationship = new Relationship__c(
                 Name = 'Test relation ' + i,
                 Type__c = '2'
@@ -110,10 +110,10 @@ public with sharing class RelationshipTriggerHandlerTest {
                 Type__c = '4'
             );
             relList.add(relationship);
-        }*/
+        }
         insert relList;
 
-        Relationship__c relation = [SELECT Id FROM Relationship__c LIMIT 1];
+        Relationship__c relation = [SELECT Id FROM Relationship__c WHERE Type__c = '4' LIMIT 1];
 
         List<Task> taskList = [SELECT Id FROM Task WHERE WhatId = :relation.Id];
         System.assertEquals(1, taskList.size(), 'Expected 1 tasks created and related to Relationship');

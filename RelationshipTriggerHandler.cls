@@ -87,74 +87,44 @@ public with sharing class RelationshipTriggerHandler extends TriggerHandler{
         Map<Relationship__c, List<Task_Scheduler__mdt>> relationToMdt = new Map<Relationship__c, List<Task_Scheduler__mdt>>();
         //List of task to insert
         List<Task> taskToInsert = new List<Task>();
-        
-        /* Soql query limit
-        for(Relationship__c relation : [SELECT Id, Type__c, OwnerId FROM Relationship__c WHERE Id IN :triggerNew]){
-            if(relation.Type__c != null && relation.OwnerId != null && (oldMap == null || oldMap.get(relation.Id).Type__c != relation.Type__c)){
-                String query = 'SELECT MasterLabel, Time__c, Type_' + relation.Type__c + '__c FROM Task_Scheduler__mdt WHERE Type_' + relation.Type__c + '__c = true';
-                for(Task_Scheduler__mdt ts : Database.query(query)){
-                    Integer days = (Integer)ts.Time__c;
-                    Task task = new Task(
-                        Subject = ts.MasterLabel,
-                        ActivityDate = Date.Today().addDays(days),
-                        OwnerId = relation.OwnerId,
-                        WhatId = relation.Id
-                    );
-                    taskToInsert.add(task);
-                }
-            }
-        }*/
-        for(Relationship__c relation : [SELECT Id, Type__c, OwnerId FROM Relationship__c WHERE Id IN :triggerNew]){
+        //iterate over Trigger new and create task
+        for(Relationship__c relation : triggerNew){
             if(relation.Type__c != null && relation.OwnerId != null &&(oldMap == null || oldMap.get(relation.Id).Type__c != relation.Type__c)){
                 for(Task_Scheduler__mdt ts : taskSchedulerList){
-                    if(!relationToMdt.containsKey(relation)){
-                        if(relation.Type__c == '1' && ts.Type_1__c == true){
-                            relationToMdt.put(relation, new List<Task_Scheduler__mdt>{ts});
-                        }
-                        else if(relation.Type__c == '2' && ts.Type_2__c == true){
-                            relationToMdt.put(relation, new List<Task_Scheduler__mdt>{ts});
-                        }
-                        else if(relation.Type__c == '3' && ts.Type_3__c == true){
-                            relationToMdt.put(relation, new List<Task_Scheduler__mdt>{ts});
-                        }
-                        else if(relation.Type__c == '4' && ts.Type_4__c == true){
-                            relationToMdt.put(relation, new List<Task_Scheduler__mdt>{ts});
-                        }
+                    Task task = new Task(
+                        OwnerId = relation.OwnerId,
+                        WhatId = relation.Id
+                    );
+                    if(relation.Type__c == '1' && ts.Type_1__c == true){
+                        Integer days = (Integer)ts.Time__c;
+                        task.Subject = ts.MasterLabel;
+                        task.ActivityDate = Date.Today().addDays(days);
+                        taskToInsert.add(task);
                     }
-                    else {
-                        if(relation.Type__c == '1' && ts.Type_1__c == true){
-                            relationToMdt.get(relation).add(ts);
-                        }
-                        //else if(relation.Type__c == '2' && ts.Type_2__c == true){
-                        //    relationToMdt.get(relation).add(ts);
-                        //}
-                        else if(relation.Type__c == '3' && ts.Type_3__c == true){
-                            relationToMdt.get(relation).add(ts);
-                        }
-                        //else if(relation.Type__c == '4' && ts.Type_4__c == true){
-                        //    relationToMdt.get(relation).add(ts);
-                        //}
+                    else if(relation.Type__c == '2' && ts.Type_2__c == true){
+                        Integer days = (Integer)ts.Time__c;
+                        task.Subject = ts.MasterLabel;
+                        task.ActivityDate = Date.Today().addDays(days);
+                        taskToInsert.add(task);
+                    }
+                    else if(relation.Type__c == '3' && ts.Type_3__c == true){
+                        Integer days = (Integer)ts.Time__c;
+                        task.Subject = ts.MasterLabel;
+                        task.ActivityDate = Date.Today().addDays(days);
+                        taskToInsert.add(task);
+                    }
+                    else if(relation.Type__c == '4' && ts.Type_4__c == true){
+                        Integer days = (Integer)ts.Time__c;
+                        task.Subject = ts.MasterLabel;
+                        task.ActivityDate = Date.Today().addDays(days);
+                        taskToInsert.add(task);
                     }
                 }
             }
         }
-        //System.debug('Map<Relationship__c, List<Task_Scheduler__mdt>>: ' + relationToMdt);
-        //iterate over map and create task
-        for(Relationship__c relation : relationToMdt.keySet()){
-            for(Task_Scheduler__mdt ts : relationToMdt.get(relation)){
-                Integer days = (Integer)ts.Time__c;
-                    Task task = new Task(
-                        Subject = ts.MasterLabel,
-                        ActivityDate = Date.Today().addDays(days),
-                        OwnerId = relation.OwnerId,
-                        WhatId = relation.Id
-                    );
-                    taskToInsert.add(task);
-            }
-        }
-        System.debug('The number of tasks: ' + taskToInsert.size());
-        System.debug('The number of queries: ' + Limits.getQueries());
-        //Create Task
+        //System.debug('The number of tasks: ' + taskToInsert.size());
+        //System.debug('The number of queries: ' + Limits.getQueries());
+        //Insert Task
         insert taskToInsert;
     }
 }
