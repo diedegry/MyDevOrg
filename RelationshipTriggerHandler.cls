@@ -125,15 +125,15 @@ public with sharing class RelationshipTriggerHandler extends TriggerHandler{
                         if(relation.Type__c == '1' && ts.Type_1__c == true){
                             relationToMdt.get(relation).add(ts);
                         }
-                        else if(relation.Type__c == '2' && ts.Type_2__c == true){
-                            relationToMdt.get(relation).add(ts);
-                        }
+                        //else if(relation.Type__c == '2' && ts.Type_2__c == true){
+                        //    relationToMdt.get(relation).add(ts);
+                        //}
                         else if(relation.Type__c == '3' && ts.Type_3__c == true){
                             relationToMdt.get(relation).add(ts);
                         }
-                        else if(relation.Type__c == '4' && ts.Type_4__c == true){
-                            relationToMdt.get(relation).add(ts);
-                        }
+                        //else if(relation.Type__c == '4' && ts.Type_4__c == true){
+                        //    relationToMdt.get(relation).add(ts);
+                        //}
                     }
                 }
             }
